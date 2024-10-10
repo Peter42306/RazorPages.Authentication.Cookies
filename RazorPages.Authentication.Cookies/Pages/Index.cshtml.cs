@@ -1,12 +1,22 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using RazorPages.Authentication.Cookies.Model;
 
 namespace RazorPages.Authentication.Cookies.Pages
 {
     public class IndexModel : PageModel
     {      
+        private readonly ApplicationContext _context;
 
-        public IActionResult OnGet()
+        public IndexModel(ApplicationContext context)
+        {
+            _context = context;
+        }
+
+        public IList<Student> Students { get; set; }
+
+        public async Task<IActionResult> OnGetAsync()
         {
             // ѕроверка наличи€ куки "login"; если еЄ нет, перенаправление на страницу авторизации
             if (Request.Cookies["login"] == null)
@@ -14,7 +24,8 @@ namespace RazorPages.Authentication.Cookies.Pages
                 return RedirectToPage("Create");
             }
 
-            // ≈сли куки найдены, отображаетс€ текуща€ страница
+            
+            Students = await _context.Students.ToListAsync();            
             return Page();
         }
 

@@ -11,9 +11,47 @@
 <body>
     @{
         // Отображение приветственного сообщения и значения куки "login"
-        <div>
-            Здравствуйте, @Request.Cookies["login"]
-        </div>
+        if (Request.Cookies["login"] != null)
+        {
+            <div>
+                Здравствуйте, @Request.Cookies["login"]
+            </div>
+        }
+
+        @if (Model.Students.Count > 0)
+        {
+            <h2>Список студентов</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Имя</th>
+                        <th>Фамилия</th>
+                        <th>Возраст</th>
+                        <th>Средний балл</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var student in Model.Students)
+                    {
+                        <tr>
+                            <td>@student.Name</td>
+                            <td>@student.Surname</td>
+                            <td>@student.Age</td>
+                            <td>@student.GPA</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div>Нет студентов для отображения.</div>
+        }
+        
+        // // Отображение приветственного сообщения и значения куки "login"
+        // <div>
+        //     Здравствуйте, @Request.Cookies["login"]
+        // </div>
     }
 
     <form method="post">
