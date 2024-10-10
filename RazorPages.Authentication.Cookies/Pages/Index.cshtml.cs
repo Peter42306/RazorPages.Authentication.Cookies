@@ -4,17 +4,24 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace RazorPages.Authentication.Cookies.Pages
 {
     public class IndexModel : PageModel
-    {
-        private readonly ILogger<IndexModel> _logger;
+    {      
 
-        public IndexModel(ILogger<IndexModel> logger)
+        public IActionResult OnGet()
         {
-            _logger = logger;
+            // ѕроверка наличи€ куки "login"; если еЄ нет, перенаправление на страницу авторизации
+            if (Request.Cookies["login"] == null)
+            {
+                return RedirectToPage("Create");
+            }
+
+            // ≈сли куки найдены, отображаетс€ текуща€ страница
+            return Page();
         }
 
-        public void OnGet()
+        public IActionResult OnPost()
         {
-
+            // ѕри отправке формы перенаправление на страницу выхода из системы
+            return RedirectToPage("Logout");
         }
     }
 }
